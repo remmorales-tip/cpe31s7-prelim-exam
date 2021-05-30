@@ -1,12 +1,9 @@
 ---
-s
 - name: Plays for VMs
   hosts: all
   vars:
     username: remmorales-tip
     password: PrelimExam
-    studentnumber: 1813768
-    groupname: sysad2
 
   tasks:
 
@@ -16,7 +13,7 @@ s
   - name: Change motd in '/etc/motd'
     ansible.builtin.lineinfile:
       path: '/etc/motd'
-      line: 'Ansible Managed by {{ studentnumber }}'
+      line: 'Ansible Managed by 1813768'
       state: present
 
   - name: user with a password
@@ -33,14 +30,8 @@ s
 
   - name: Create a group named 'sysad2'
     ansible.builtin.group:
-      name: "{{ groupname }}"
+      name: sysad2
       state: present
-
-  - name: Add EPEL repository
-    ansible.builtin.dnf:
-      name: epel-release
-      state: latest
-    when: ansible_distribution == "CentOS"
 
   - name: Install htop package
     ansible.builtin.dnf:
