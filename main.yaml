@@ -1,0 +1,37 @@
+---
+- name: Plays for VMs
+  hosts: all
+  vars:
+    username: remmorales-tip
+    password: PrelimExam
+
+
+  tasks:
+
+  - name: Change motd in '/etc/motd'
+    ansible.builtin.lineinfile:
+      path: '/etc/motd'
+      line: 'Ansible Managed by 1813768'
+      state: present
+
+  - name: user with a password
+    ansible.builtin.user:
+      name: "{{ username }}"
+      state: present
+      password: "{{ password | password_hash('sha512') }}"
+        
+  - name: passwordless sudoer user
+    ansible.builtin.lineinfile:
+      path: '/etc/sudoers'
+      line: '{{ username }} ALL=(ALL) NOPASSWD: ALL'
+      state: present
+
+  - name: Create a group named 'sysad2'
+    ansible.builtin.group:
+      name: sysad2
+      state: present
+
+  - name: Install htop package
+    ansible.builtin.dnf:
+      name: htop
+      state: latest
